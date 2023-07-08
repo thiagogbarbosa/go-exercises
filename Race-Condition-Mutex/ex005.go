@@ -22,7 +22,9 @@ import (
 */
 
 var wg sync.WaitGroup
-var contador int = 0
+var contador int
+
+const quantidadeDeGoroutines = 300
 
 func goroutines(i int) {
 	wg.Add(i)
@@ -32,14 +34,14 @@ func goroutines(i int) {
 			runtime.Gosched()
 			v++
 			contador = v
-			fmt.Println("Eu sou a goroutine número:", j, "E a contagem está em:", contador)
 			wg.Done()
 		}()
 	}
 }
 
 func main() {
-	goroutines(10)
+	goroutines(quantidadeDeGoroutines)
 	wg.Wait()
+	fmt.Println("Total de goroutines:\t", quantidadeDeGoroutines, "\nTotal do contador:\t", contador)
 
 }
